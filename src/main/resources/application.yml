@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/tw_user_center?serverTimezone=UTC
+    hikari:
+      username: root
+      password: jmr980328
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  #        namespace: 0e5a522d-9b74-4833-af36-35297b3e50fb
+  #        cluster-name: NJ
+  application:
+    name: user-center
+
+server:
+  port: 8081
