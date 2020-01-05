@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     private final UserService userService;
 
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable Integer id){
-        return this.userService.findById(id);
-    }
+//    @GetMapping("/{id}")
+//    public User getUserById(@PathVariable Integer id){
+//        return this.userService.findByUsername("KeenKing");
+//    }
 }
