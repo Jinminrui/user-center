@@ -21,7 +21,7 @@ public class UserService {
         return this.userMapper.selectByPrimaryKey(id);
     }
 
-    public User login(UserLoginDTO userLoginDTO) {
+    public User loginByAccount(UserLoginDTO userLoginDTO) {
         log.info("用户名{}, 密码{}", userLoginDTO.getUsername(),userLoginDTO.getPassword());
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
