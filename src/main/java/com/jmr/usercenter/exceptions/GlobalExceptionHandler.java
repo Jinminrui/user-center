@@ -1,4 +1,4 @@
-package com.jmr.usercenter.auth;
+package com.jmr.usercenter.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-    @ExceptionHandler(SecurityException.class)
-    public ResponseEntity<ErrorBody> error(SecurityException e){
+    @ExceptionHandler(java.lang.SecurityException.class)
+    public ResponseEntity<ErrorBody> error(java.lang.SecurityException e){
         log.warn("发生security异常");
-        return new ResponseEntity<ErrorBody>(
+        return new ResponseEntity<>(
                 ErrorBody.builder()
                         .desc("Token非法，用户不允许访问")
                         .code(HttpStatus.UNAUTHORIZED.value())
-                        .build(),HttpStatus.UNAUTHORIZED);
+                        .build(), HttpStatus.UNAUTHORIZED);
     }
 }
 

@@ -11,11 +11,12 @@
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="wx_name" jdbcType="VARCHAR" property="wxName" />
-    <result column="gender" jdbcType="BIT" property="gender" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="role" jdbcType="INTEGER" property="role" />
     <result column="position" jdbcType="VARCHAR" property="position" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
   </resultMap>
 </mapper>

@@ -2,13 +2,13 @@ package com.jmr.usercenter.domain.entity.user;
 
 import java.util.Date;
 import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import lombok.*;
-
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 @Table(name = "user")
 public class User {
     @Id
@@ -39,12 +39,13 @@ public class User {
      * 微信名称
 
      */
+    @Column(name = "wx_name")
     private String wxName;
 
     /**
      * 性别
      */
-    private Boolean gender;
+    private String gender;
 
     /**
      * 头像
@@ -66,4 +67,6 @@ public class User {
 
     @Column(name = "update_time")
     private Date updateTime;
+
+    private String description;
 }

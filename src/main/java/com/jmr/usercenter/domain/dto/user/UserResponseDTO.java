@@ -55,6 +55,8 @@ public class UserResponseDTO {
      */
     private String position;
 
+    private String description;
+
     private Date createTime;
 
     private Date updateTime;

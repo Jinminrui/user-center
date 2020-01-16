@@ -9,9 +9,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class UserLoginDTO {
-    private String phoneNum;
-    private String code;
+public class UserUpdateRequestDTO {
+    private Integer pkId;
+
     private String username;
-    private String password;
+
+    private String phone;
+
+    private String email;
+
+    private String avatar;
+
+    private String position;
+
+    private String description;
 }

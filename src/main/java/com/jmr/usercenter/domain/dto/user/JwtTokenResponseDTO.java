@@ -13,5 +13,5 @@ import java.util.Date;
 @Data
 public class JwtTokenResponseDTO {
     private String token;
-    private Date expirationTime;
+    private String expirationTime;
 }

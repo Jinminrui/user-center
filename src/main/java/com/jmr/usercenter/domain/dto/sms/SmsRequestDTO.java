@@ -1,4 +1,4 @@
-package com.jmr.usercenter.domain.dto.user;
+package com.jmr.usercenter.domain.dto.sms;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,11 +7,8 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Data
-public class UserLoginDTO {
+@Builder
+public class SmsRequestDTO {
     private String phoneNum;
-    private String code;
-    private String username;
-    private String password;
 }
