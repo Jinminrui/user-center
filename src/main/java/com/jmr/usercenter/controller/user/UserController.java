@@ -4,6 +4,7 @@ import com.jmr.usercenter.auth.CheckLogin;
 import com.jmr.usercenter.domain.dto.CommonResponseDTO;
 import com.jmr.usercenter.domain.dto.user.*;
 import com.jmr.usercenter.domain.entity.user.User;
+import com.jmr.usercenter.service.team.TeamService;
 import com.jmr.usercenter.service.user.UserService;
 import com.jmr.usercenter.utils.JwtOperator;
 import com.jmr.usercenter.utils.RedisUtil;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -24,6 +26,7 @@ import java.util.Map;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
     private final UserService userService;
+    private final TeamService teamService;
     private final JwtOperator jwtOperator;
     private final RedisUtil redisUtil;
 
@@ -35,9 +38,23 @@ public class UserController {
      */
     @GetMapping("/{id}")
     @CheckLogin
-    public CommonResponseDTO<UserResponseDTO> getUserById(@PathVariable Integer id) {
-        User user = this.userService.findById(id);
+    public CommonResponseDTO<UserResponseDTO> getUserById(@PathVariable String id) {
+        User user = userService.findById(id);
         UserResponseDTO userResponseDTO = new UserResponseDTO();
+        if(user.getPassword() == null) {
+            userResponseDTO.setHasPassword(false);
+        }
+        userResponseDTO.setHasPassword(true);
+        String teamId = teamService.getTeamIdByUserId(id);
+
+        // TODO 查询太多次数据库了，可以调优
+
+        if(teamId == null) {
+            userResponseDTO.setTeam(null);
+        } else {
+            userResponseDTO.setTeam(teamService.getTeamInfoById(teamId));
+        }
+
         BeanUtils.copyProperties(user, userResponseDTO);
         return CommonResponseDTO.<UserResponseDTO>builder().code(200).data(userResponseDTO).desc("success").build();
     }
@@ -46,11 +63,15 @@ public class UserController {
     public CommonResponseDTO<LoginResponseDTO> loginByPhone (@RequestBody UserLoginDTO userLoginDTO){
         String phoneNum = userLoginDTO.getPhoneNum();
         String code = userLoginDTO.getCode();
+        // 从redis缓存里取出手机号对应的验证码，如果正确，进行登录的逻辑
+        if(redisUtil.get(phoneNum) == null) {
+            return CommonResponseDTO.<LoginResponseDTO>builder().code(400).desc("验证码无效").build();
+        }
         if(redisUtil.get(phoneNum).equals(code)){
             User user = userService.loginByPhone(userLoginDTO);
             return getSuccessLoginResponseDTO(user);
         }
-        return CommonResponseDTO.<LoginResponseDTO>builder().code(400).desc("验证码无效").build();
+        return CommonResponseDTO.<LoginResponseDTO>builder().code(500).desc("登录失败").build();
     }
 
 
@@ -105,5 +126,17 @@ public class UserController {
         } else {
             return CommonResponseDTO.builder().code(200).desc("更新失败").build();
         }
+    }
+
+    /**
+     * 根据team获取成员列表
+     * @param teamId
+     * @return List<User>
+     */
+    @GetMapping("/getAllUsersByTeam")
+    @CheckLogin
+    public CommonResponseDTO<List<User>> getAllUsersByTeam(@RequestParam(value = "teamId", required = true) String teamId){
+        List<User> userList = userService.getAllUsersByTeam(teamId);
+        return CommonResponseDTO.<List<User>>builder().code(200).data(userList).desc("success").build();
     }
 }

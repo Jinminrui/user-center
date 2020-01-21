@@ -1,8 +1,10 @@
 package com.jmr.usercenter.auth;
 
+import com.jmr.usercenter.exceptions.SecurityException;
 import com.jmr.usercenter.utils.JwtOperator;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,6 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -27,10 +30,11 @@ public class CheckLoginAspect {
             ServletRequestAttributes attributes = (ServletRequestAttributes) requestAttributes;
             HttpServletRequest request = attributes.getRequest();
             String token = request.getHeader("UserToken");
-            System.out.println(token);
+            log.info("登录token为：{}",token);
 
             // 2. 判断token是否有效
             Boolean isValid = jwtOperator.validateToken(token);
+            log.info("token是否有效：{}",isValid);
             if(!isValid){
                 throw new SecurityException("Token 不合法");
             }

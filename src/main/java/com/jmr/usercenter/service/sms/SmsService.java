@@ -8,15 +8,12 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
-import com.jmr.usercenter.domain.dto.message.SendSmsMsgDTO;
 import com.jmr.usercenter.domain.dto.sms.SmsRequestDTO;
 import com.jmr.usercenter.domain.dto.sms.SmsVerifyCodeDTO;
 import com.jmr.usercenter.utils.RedisUtil;
 import com.jmr.usercenter.utils.VerifyCodeOperator;
 import lombok.RequiredArgsConstructor;
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 @Service

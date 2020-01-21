@@ -2,18 +2,18 @@ package com.jmr.usercenter.domain.entity.user;
 
 import java.util.Date;
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
+import lombok.*;
+
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "user")
 public class User {
     @Id
     @Column(name = "pk_id")
-    private Integer pkId;
+    private String pkId;
 
     /**
      * 用户名
@@ -45,7 +45,7 @@ public class User {
     /**
      * 性别
      */
-    private String gender;
+    private Boolean gender;
 
     /**
      * 头像

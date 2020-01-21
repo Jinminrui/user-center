@@ -25,6 +25,9 @@ spring:
         min-idle: 0
         max-active: 8
         max-wait: -1
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
 server:
   port: 8081
@@ -39,4 +42,4 @@ aliyun:
   oss:
     endpoint: oss-cn-shanghai.aliyuncs.com
     bucketName: team-work
-    urlPrefix: http://www.jinminrui.cn/
+    urlPrefix: http://oss.jinminrui.cn/

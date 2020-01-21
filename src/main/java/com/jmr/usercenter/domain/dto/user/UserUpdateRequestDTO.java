@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class UserUpdateRequestDTO {
-    private Integer pkId;
+    private String pkId;
 
     private String username;
 
@@ -23,4 +23,6 @@ public class UserUpdateRequestDTO {
     private String position;
 
     private String description;
+
+    private String wxName;
 }

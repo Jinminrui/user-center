@@ -1,5 +1,6 @@
 package com.jmr.usercenter.domain.dto.user;
 
+import com.jmr.usercenter.domain.entity.team.Team;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.Date;
 @Builder
 @Data
 public class UserResponseDTO {
-    private Integer pkId;
+    private String pkId;
 
     /**
      * 用户名
@@ -38,7 +39,7 @@ public class UserResponseDTO {
     /**
      * 性别
      */
-    private Boolean gender;
+    private String gender;
 
     /**
      * 头像
@@ -55,7 +56,20 @@ public class UserResponseDTO {
      */
     private String position;
 
+    /**
+     * 个人描述
+     */
     private String description;
+
+    /**
+     * 是否有密码
+     */
+    private Boolean hasPassword;
+
+    /**
+     * 所属团队id
+     */
+    private Team team;
 
     private Date createTime;
 

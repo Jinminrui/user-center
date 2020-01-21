@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-    @ExceptionHandler(java.lang.SecurityException.class)
-    public ResponseEntity<ErrorBody> error(java.lang.SecurityException e){
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<ErrorBody> error(SecurityException e){
         log.warn("发生security异常");
         return new ResponseEntity<>(
                 ErrorBody.builder()
