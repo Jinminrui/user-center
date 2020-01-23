@@ -2,6 +2,7 @@ package com.jmr.usercenter.controller.team;
 
 import com.jmr.usercenter.domain.dto.CommonResponseDTO;
 import com.jmr.usercenter.domain.entity.team.Team;
+import com.jmr.usercenter.domain.entity.user_team_relation.UserTeamRelation;
 import com.jmr.usercenter.service.team.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,5 +27,14 @@ public class TeamController {
     public CommonResponseDTO<Object> update(@RequestBody Team team) {
         teamService.update(team);
         return CommonResponseDTO.builder().code(200).desc("更新成功").build();
+    }
+
+    @PostMapping("/deleteMember")
+    public CommonResponseDTO<Object> deleteMember(@RequestBody UserTeamRelation userTeamRelation) {
+        int result = teamService.deleteMember(userTeamRelation.getTeamId(), userTeamRelation.getUserId());
+        if (result == 1) {
+            return CommonResponseDTO.builder().code(200).desc("删除成功").build();
+        }
+        return CommonResponseDTO.builder().code(200).desc("删除失败").build();
     }
 }

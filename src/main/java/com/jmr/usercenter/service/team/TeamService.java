@@ -61,4 +61,13 @@ public class TeamService {
         team.setUpdateTime(new Date());
         teamMapper.updateByPrimaryKeySelective(team);
     }
+
+    public int deleteMember(String teamId, String userId) {
+        log.info("删除的teamID:{}, userID:{}", teamId,userId);
+        Example example = new Example(UserTeamRelation.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userId", userId);
+        criteria.andEqualTo("teamId", teamId);
+        return userTeamRelationMapper.deleteByExample(example);
+    }
 }
