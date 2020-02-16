@@ -110,6 +110,10 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -132,6 +136,9 @@
     </dependencyManagement>
 
     <build>
+        <finalName>tw-user-center</finalName>
+        <defaultGoal>package</defaultGoal>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

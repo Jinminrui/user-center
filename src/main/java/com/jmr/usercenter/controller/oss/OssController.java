@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3009",maxAge = 3600)
+@CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
 @RequestMapping("/oss")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))

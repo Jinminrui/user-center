@@ -77,9 +77,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `tw_user_center`.`message`
+-- Table `tw_user_center`.`messageRequestDTO`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tw_user_center`.`message` (
+CREATE TABLE IF NOT EXISTS `tw_user_center`.`messageRequestDTO` (
   `pk_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(45) NOT NULL COMMENT '标题\n',
   `content` VARCHAR(500) NOT NULL COMMENT '内容',
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `tw_user_center`.`user_message` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_message_message1`
     FOREIGN KEY (`message_id`)
-    REFERENCES `tw_user_center`.`message` (`pk_id`)
+    REFERENCES `tw_user_center`.`messageRequestDTO` (`pk_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
