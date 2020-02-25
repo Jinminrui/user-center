@@ -2,6 +2,7 @@ package com.jmr.usercenter.config;
 
 import com.jmr.usercenter.controller.message.WebSocketServer;
 import com.jmr.usercenter.service.message.MessageService;
+import com.jmr.usercenter.service.user.UserService;
 import com.jmr.usercenter.utils.UUIDOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +17,9 @@ public class WebSocketConfig {
     }
 
     @Autowired
-    public void setMessageService(MessageService messageService, UUIDOperator uuidOperator) {
+    public void setMessageService(MessageService messageService, UUIDOperator uuidOperator, UserService userService) {
         WebSocketServer.messageService = messageService;
         WebSocketServer.uuidOperator = uuidOperator;
+        WebSocketServer.userService = userService;
     }
 }

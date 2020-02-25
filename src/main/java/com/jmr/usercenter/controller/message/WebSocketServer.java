@@ -1,17 +1,19 @@
 package com.jmr.usercenter.controller.message;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jmr.usercenter.auth.CheckLogin;
-import com.jmr.usercenter.domain.dto.websocket.MessageRequestDTO;
+import com.jmr.usercenter.domain.dto.message.MessageRequestDTO;
+import com.jmr.usercenter.domain.dto.message.MessageResponseDTO;
+import com.jmr.usercenter.domain.dto.message.Receiver;
 import com.jmr.usercenter.domain.entity.message.Message;
 import com.jmr.usercenter.domain.entity.message_text.MessageText;
+import com.jmr.usercenter.domain.entity.user.User;
 import com.jmr.usercenter.service.message.MessageService;
-import com.jmr.usercenter.utils.ApplicationContextRegister;
+import com.jmr.usercenter.service.user.UserService;
 import com.jmr.usercenter.utils.UUIDOperator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -24,13 +26,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @ServerEndpoint("/message/{userId}")
-@CheckLogin
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class WebSocketServer {
 
     public static MessageService messageService;
     public static UUIDOperator uuidOperator;
+    public static UserService userService;
     /**
      * 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
      */
@@ -100,15 +102,14 @@ public class WebSocketServer {
     @OnMessage
     public void onMessage(String messageString, Session session) throws IOException {
         log.info("用户:" + userId + ",报文:" + messageString);
-        session.getBasicRemote().sendText("服务器接受到消息");
 
 
         MessageRequestDTO messageRequestDTO = JSONObject.parseObject(messageString, MessageRequestDTO.class);
         String messageTitle = messageRequestDTO.getMessageTitle();
         String messageContent = messageRequestDTO.getMessageContent();
-        List<String> mentions = messageRequestDTO.getMentions();
+        List<Receiver> receivers = messageRequestDTO.getReceivers();
 
-
+        User sender = userService.findById(userId);
 
         String messageTextId = uuidOperator.getUUid();
         MessageText messageText = MessageText.builder()
@@ -120,11 +121,14 @@ public class WebSocketServer {
                 .build();
         messageService.insertMessageText(messageText);
 
-        for (String receiverId : mentions) {
+        for (Receiver receiver : receivers) {
+            String messageId = uuidOperator.getUUid();
+
+            // 插入到消息数据表
             Message message = Message.builder()
-                    .pkId(uuidOperator.getUUid())
-                    .receiverId(receiverId)
-                    .senderId(this.userId)
+                    .pkId(messageId)
+                    .receiverId(receiver.getUsername())
+                    .senderId(sender.getUsername())
                     .messageTextId(messageTextId)
                     .type(messageRequestDTO.getType())
                     .senderRole(1)
@@ -133,7 +137,22 @@ public class WebSocketServer {
                     .updateTime(new Date())
                     .build();
             messageService.insertMessage(message);
-            sendInfo(messageString, receiverId);
+
+            // 构造返回给用户的信息
+            MessageResponseDTO messageResponseDTO = MessageResponseDTO.builder()
+                    .messageId(messageId)
+                    .sender(sender.getUsername())
+                    .receiver(receiver.getUsername())
+                    .title(messageTitle)
+                    .content(messageContent)
+                    .status(false)
+                    .type(messageRequestDTO.getType())
+                    .sendTime(new Date())
+                    .total(messageService.getTotal(receiver.getUsername()))
+                    .notRead(messageService.getUnReadNum(receiver.getUsername()))
+                    .build();
+
+            sendInfo(JSON.toJSONString(messageResponseDTO), receiver.getId());
         }
 
         // 可以群发消息

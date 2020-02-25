@@ -30,11 +30,10 @@ public class CheckLoginAspect {
             ServletRequestAttributes attributes = (ServletRequestAttributes) requestAttributes;
             HttpServletRequest request = attributes.getRequest();
             String token = request.getHeader("UserToken");
-            log.info("登录token为：{}",token);
+//            log.info("请求路径：{}",request.getPathInfo());
 
             // 2. 判断token是否有效
             Boolean isValid = jwtOperator.validateToken(token);
-            log.info("token是否有效：{}",isValid);
             if(!isValid){
                 throw new SecurityException("Token 不合法");
             }

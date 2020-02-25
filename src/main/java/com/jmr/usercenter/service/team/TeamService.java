@@ -9,6 +9,7 @@ import com.jmr.usercenter.utils.UUIDOperator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -62,6 +63,8 @@ public class TeamService {
         teamMapper.updateByPrimaryKeySelective(team);
     }
 
+
+    @CacheEvict(value = "teamMember", key = "#teamId", condition = "#teamId!=null&&#userId!=null")
     public int deleteMember(String teamId, String userId) {
         log.info("删除的teamID:{}, userID:{}", teamId,userId);
         Example example = new Example(UserTeamRelation.class);

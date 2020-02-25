@@ -4,11 +4,14 @@ import com.jmr.usercenter.dao.user.UserMapper;
 import com.jmr.usercenter.domain.dto.user.UserLoginDTO;
 import com.jmr.usercenter.domain.dto.user.UserUpdateRequestDTO;
 import com.jmr.usercenter.domain.entity.user.User;
+import com.jmr.usercenter.utils.RedisUtil;
 import com.jmr.usercenter.utils.UUIDOperator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -22,18 +25,27 @@ import java.util.List;
 public class UserService {
     private final UserMapper userMapper;
     private final UUIDOperator uuidOperator;
+    private final RedisUtil redisUtil;
 
     public User findById(String id) {
-        return userMapper.selectByPrimaryKey(id);
+        if (redisUtil.hasKey(id) && redisUtil.get(id) != null) {
+            log.info("从redis中读取{}的信息", id);
+            return (User) redisUtil.get(id);
+        }
+        User user = userMapper.selectByPrimaryKey(id);
+        if (user != null) {
+            redisUtil.set(id, user);
+        }
+        return user;
     }
 
     public User loginByAccount(UserLoginDTO userLoginDTO) {
-        log.info("账号{}, 密码{}", userLoginDTO.getPhoneNum(),userLoginDTO.getPassword());
+        log.info("账号{}, 密码{}", userLoginDTO.getPhoneNum(), userLoginDTO.getPassword());
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("phone", userLoginDTO.getPhoneNum());
         User user = userMapper.selectOneByExample(example);
-        if(user.getPassword() == null) {
+        if (user.getPassword() == null) {
             return null;
         }
         if (user.getPassword().equals(userLoginDTO.getPassword())) {
@@ -42,8 +54,8 @@ public class UserService {
         return null;
     }
 
-    public User loginByPhone(UserLoginDTO userLoginDTO){
-        log.info("手机号{}, 验证码{}", userLoginDTO.getPhoneNum(),userLoginDTO.getCode());
+    public User loginByPhone(UserLoginDTO userLoginDTO) {
+        log.info("手机号{}, 验证码{}", userLoginDTO.getPhoneNum(), userLoginDTO.getCode());
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("phone", userLoginDTO.getPhoneNum());
@@ -72,14 +84,16 @@ public class UserService {
         userMapper.insertSelective(user);
     }
 
+
     public Integer update(UserUpdateRequestDTO userUpdateRequestDTO) {
+        redisUtil.del(userUpdateRequestDTO.getPkId());
         User user = new User();
         BeanUtils.copyProperties(userUpdateRequestDTO, user);
         user.setUpdateTime(new Date());
         return userMapper.updateByPrimaryKeySelective(user);
     }
 
-    public List<User> getAllUsersByTeam(String teamId){
+    public List<User> getAllUsersByTeam(String teamId) {
         return userMapper.getAllUsersByTeam(teamId);
     }
 }

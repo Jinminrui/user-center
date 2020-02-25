@@ -3,27 +3,41 @@ package com.jmr.usercenter.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.time.Duration;
+
 
 @Configuration
 @EnableCaching //开启注解
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RedisConfig extends CachingConfigurerSupport {
 
-    /**
-     * retemplate相关配置
-     * @param factory
-     * @return
-     */
+    private final RedisConnectionFactory factory;
+
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+    public CacheManager cacheManager() {
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofDays(1)); // 设置缓存有效期一天
+        return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(factory))
+                .cacheDefaults(redisCacheConfiguration).build();
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate() {
 
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         // 配置连接工厂

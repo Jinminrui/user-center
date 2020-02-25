@@ -124,7 +124,7 @@ public class UserController {
         if (userService.update(userUpdateRequestDTO).equals(1)) {
             return CommonResponseDTO.builder().code(200).desc("更新成功").build();
         } else {
-            return CommonResponseDTO.builder().code(200).desc("更新失败").build();
+            return CommonResponseDTO.builder().code(500).desc("更新失败").build();
         }
     }
 

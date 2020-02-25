@@ -15,7 +15,7 @@
     <description>毕业设计 用户中心微服务</description>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11.0.6</java.version>
     </properties>
 
     <dependencies>
@@ -109,6 +109,10 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

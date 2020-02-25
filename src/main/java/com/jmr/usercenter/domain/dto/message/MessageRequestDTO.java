@@ -1,4 +1,4 @@
-package com.jmr.usercenter.domain.dto.websocket;
+package com.jmr.usercenter.domain.dto.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @Data
 public class MessageRequestDTO {
-    private List<String> mentions;
+    private List<Receiver> receivers;
     private String messageTitle;
     private String messageContent;
     private Integer type;
