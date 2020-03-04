@@ -5,7 +5,8 @@ import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserMapper extends Mapper<User> {
-    List<User> getAllUsersByTeam (@Param("teamId") String teamId);
+    List<Map<String, Object>> getAllUsersByTeam (@Param("teamId") String teamId);
 }

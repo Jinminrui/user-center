@@ -12,7 +12,28 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="message_text_id" jdbcType="VARCHAR" property="messageTextId" />
     <result column="status" jdbcType="BIT" property="status" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
   </resultMap>
+
+  <resultMap id="MessageItemMap" type="java.util.HashMap">
+    <id column="pk_id" jdbcType="VARCHAR" property="pkId" />
+    <result column="sender_id" jdbcType="VARCHAR" property="senderId" />
+    <result column="sender_role" jdbcType="INTEGER" property="senderRole" />
+    <result column="receiver_id" jdbcType="VARCHAR" property="receiverId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="senderName" jdbcType="VARCHAR" property="senderName" />
+  </resultMap>
+
+  <select id="getMessageListByReceiver" resultMap="MessageItemMap">
+    select message.*, user.username as 'senderName'
+    from message left join user on message.sender_id = user.pk_id
+    where message.receiver_id = #{receiverId}
+  </select>
 </mapper>

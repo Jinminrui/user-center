@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +61,7 @@ public class UserController {
     }
 
     @PostMapping("/loginByPhone")
-    public CommonResponseDTO<LoginResponseDTO> loginByPhone (@RequestBody UserLoginDTO userLoginDTO){
+    public CommonResponseDTO<LoginResponseDTO> loginByPhone (@RequestBody UserLoginDTO userLoginDTO) throws IOException {
         String phoneNum = userLoginDTO.getPhoneNum();
         String code = userLoginDTO.getCode();
         // 从redis缓存里取出手机号对应的验证码，如果正确，进行登录的逻辑
@@ -78,7 +79,7 @@ public class UserController {
     /**
      * 账号密码登录
      *
-     * @param userLoginDTO
+     * @param  userLoginDTO
      * @return CommonResponseDTO
      */
     @PostMapping("/loginByAccount")
@@ -135,8 +136,8 @@ public class UserController {
      */
     @GetMapping("/getAllUsersByTeam")
     @CheckLogin
-    public CommonResponseDTO<List<User>> getAllUsersByTeam(@RequestParam(value = "teamId", required = true) String teamId){
-        List<User> userList = userService.getAllUsersByTeam(teamId);
-        return CommonResponseDTO.<List<User>>builder().code(200).data(userList).desc("success").build();
+    public CommonResponseDTO<List<Map<String,Object>>> getAllUsersByTeam(@RequestParam(value = "teamId", required = true) String teamId){
+        List<Map<String, Object>> userList = userService.getAllUsersByTeam(teamId);
+        return CommonResponseDTO.<List<Map<String, Object>>>builder().code(200).data(userList).desc("success").build();
     }
 }

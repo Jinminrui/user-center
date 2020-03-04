@@ -7,58 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Data
 public class MessageResponseDTO {
-    /**
-     * id
-     */
     private String messageId;
-
-    /**
-     * 消息类型
-     */
-    private Integer type;
-
-    /**
-     * 发送者信息
-     */
-    private String sender;
-
-    /**
-     * 接受者信息
-     */
-    private String receiver;
-
-    /**
-     * 信息标题
-     */
+    private String receiverName;
+    private String senderName;
     private String title;
-
-    /**
-     * 信息内容
-     */
     private String content;
-
-    /**
-     * 消息状态
-     */
-    private Boolean status;
-
-    /**
-     * 发送时间
-     */
+    private int type;
+    private boolean status;
     private Date sendTime;
-
-    /**
-     * 收到的消息总数
-     */
-    private Integer total;
-
-    /**
-     * 未读消息数量
-     */
-    private Integer notRead;
 }

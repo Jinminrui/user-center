@@ -6,7 +6,6 @@ import com.jmr.usercenter.domain.dto.message.MessageRequestDTO;
 import com.jmr.usercenter.domain.dto.message.MessageResponseDTO;
 import com.jmr.usercenter.domain.dto.message.Receiver;
 import com.jmr.usercenter.domain.entity.message.Message;
-import com.jmr.usercenter.domain.entity.message_text.MessageText;
 import com.jmr.usercenter.domain.entity.user.User;
 import com.jmr.usercenter.service.message.MessageService;
 import com.jmr.usercenter.service.user.UserService;
@@ -111,52 +110,39 @@ public class WebSocketServer {
 
         User sender = userService.findById(userId);
 
-        String messageTextId = uuidOperator.getUUid();
-        MessageText messageText = MessageText.builder()
-                .pkId(messageTextId)
-                .title(messageTitle)
-                .content(messageContent)
-                .createTime(new Date())
-                .updateTime(new Date())
-                .build();
-        messageService.insertMessageText(messageText);
-
         for (Receiver receiver : receivers) {
             String messageId = uuidOperator.getUUid();
+
+            Date sendTime = new Date();
 
             // 插入到消息数据表
             Message message = Message.builder()
                     .pkId(messageId)
-                    .receiverId(receiver.getUsername())
-                    .senderId(sender.getUsername())
-                    .messageTextId(messageTextId)
+                    .receiverId(receiver.getId())
+                    .senderId(sender.getPkId())
+                    .title(messageTitle)
+                    .content(messageContent)
                     .type(messageRequestDTO.getType())
                     .senderRole(1)
                     .status(false)
-                    .createTime(new Date())
+                    .createTime(sendTime)
                     .updateTime(new Date())
                     .build();
             messageService.insertMessage(message);
 
-            // 构造返回给用户的信息
             MessageResponseDTO messageResponseDTO = MessageResponseDTO.builder()
                     .messageId(messageId)
-                    .sender(sender.getUsername())
-                    .receiver(receiver.getUsername())
+                    .receiverName(receiver.getUsername())
+                    .senderName(sender.getUsername())
                     .title(messageTitle)
                     .content(messageContent)
-                    .status(false)
                     .type(messageRequestDTO.getType())
-                    .sendTime(new Date())
-                    .total(messageService.getTotal(receiver.getUsername()))
-                    .notRead(messageService.getUnReadNum(receiver.getUsername()))
+                    .sendTime(sendTime)
+                    .status(false)
                     .build();
 
             sendInfo(JSON.toJSONString(messageResponseDTO), receiver.getId());
         }
-
-        // 可以群发消息
-        // 消息保存到数据库、redis
     }
 
     /**

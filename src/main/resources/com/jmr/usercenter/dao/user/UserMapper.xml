@@ -20,27 +20,32 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
   </resultMap>
 
-  <select id="getAllUsersByTeam" resultMap="BaseResultMap" >
-    select user.* from user_team_relation left join user
-        on user.pk_id=user_team_relation.user_id
-        where user_team_relation.team_id=#{teamId}
-  </select>
+  <resultMap id="UserInfoMap" type="java.util.HashMap">
+    <id column="pk_id" jdbcType="VARCHAR" property="pkId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="wx_name" jdbcType="VARCHAR" property="wxName" />
+    <result column="gender" jdbcType="BIT" property="gender" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="role" jdbcType="INTEGER" property="role" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
 
-<!--  <resultMap id="UserByTeamMap" type="com.jmr.usercenter.domain.entity.user.UserByTeam">-->
-<!--    <collection property="userList" javaType="list" ofType="com.jmr.usercenter.domain.entity.user.User">-->
-<!--      <id column="pk_id" jdbcType="VARCHAR" property="pkId" />-->
-<!--      <result column="username" jdbcType="VARCHAR" property="username" />-->
-<!--      <result column="password" jdbcType="VARCHAR" property="password" />-->
-<!--      <result column="phone" jdbcType="VARCHAR" property="phone" />-->
-<!--      <result column="email" jdbcType="VARCHAR" property="email" />-->
-<!--      <result column="wx_name" jdbcType="VARCHAR" property="wxName" />-->
-<!--      <result column="gender" jdbcType="BIT" property="gender" />-->
-<!--      <result column="avatar" jdbcType="VARCHAR" property="avatar" />-->
-<!--      <result column="role" jdbcType="INTEGER" property="role" />-->
-<!--      <result column="position" jdbcType="VARCHAR" property="position" />-->
-<!--      <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />-->
-<!--      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />-->
-<!--      <result column="description" jdbcType="VARCHAR" property="description" />-->
-<!--    </collection>-->
-<!--  </resultMap>-->
+  <select id="getAllUsersByTeam" resultMap="UserInfoMap" >
+    select user.pk_id,
+       user.username,
+       user.phone,
+       user.email,
+       user.wx_name,
+       user.gender,
+       user.avatar,
+       user.role,
+       user.position,
+       user.description
+    from user_team_relation left join user
+    on user.pk_id=user_team_relation.user_id
+    where user_team_relation.team_id=#{teamId}
+  </select>
 </mapper>

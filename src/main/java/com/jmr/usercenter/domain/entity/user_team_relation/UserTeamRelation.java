@@ -5,10 +5,10 @@ import javax.persistence.*;
 
 import lombok.*;
 
-@Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Data
 @Table(name = "user_team_relation")
 public class UserTeamRelation {
     @Id
@@ -26,4 +26,7 @@ public class UserTeamRelation {
 
     @Column(name = "update_time")
     private Date updateTime;
+
+    @Column(name = "user_role")
+    private Integer userRole;
 }

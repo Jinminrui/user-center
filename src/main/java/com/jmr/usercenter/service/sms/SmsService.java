@@ -8,6 +8,7 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.jmr.usercenter.domain.dto.sms.SmsInviteInfoDTO;
 import com.jmr.usercenter.domain.dto.sms.SmsRequestDTO;
 import com.jmr.usercenter.domain.dto.sms.SmsVerifyCodeDTO;
 import com.jmr.usercenter.utils.RedisUtil;
@@ -48,6 +49,27 @@ public class SmsService {
         redisUtil.set(smsRequestDTO.getPhoneNum(),  smsVerifyCodeDTO.getCode(), 360);
 
         return response.getData();
+    }
 
+    public String sendInviteInfo(String target, String senderName) throws ClientException {
+        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI4Fsk3ufKP5w3LN61QHhp", "zAGppLb9O9FWCaGCYi2Bl76sGGZw1T");
+        IAcsClient client = new DefaultAcsClient(profile);
+        SmsInviteInfoDTO smsInviteInfoDTO = new SmsInviteInfoDTO(senderName);
+        String data = JSON.toJSONString(smsInviteInfoDTO);
+        CommonRequest request = new CommonRequest();
+
+        request.setMethod(MethodType.POST);
+        request.setDomain("dysmsapi.aliyuncs.com");
+        request.setVersion("2017-05-25");
+        request.setAction("SendSms");
+        request.putQueryParameter("RegionId", "cn-hangzhou");
+        request.putQueryParameter("PhoneNumbers", target);
+        request.putQueryParameter("SignName", "TW团队协作平台");
+        request.putQueryParameter("TemplateCode", "SMS_184621036");
+        request.putQueryParameter("TemplateParam", data);
+
+        CommonResponse response = client.getCommonResponse(request);
+
+        return response.getData();
     }
 }

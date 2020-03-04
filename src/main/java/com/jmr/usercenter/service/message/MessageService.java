@@ -1,9 +1,7 @@
 package com.jmr.usercenter.service.message;
 
 import com.jmr.usercenter.dao.message.MessageMapper;
-import com.jmr.usercenter.dao.message_text.MessageTextMapper;
 import com.jmr.usercenter.domain.entity.message.Message;
-import com.jmr.usercenter.domain.entity.message_text.MessageText;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +9,13 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MessageService {
     private final MessageMapper messageMapper;
-    private final MessageTextMapper messageTextMapper;
-
-    public void insertMessageText(MessageText messageText) {
-        messageTextMapper.insert(messageText);
-    }
 
     public void insertMessage(Message message) {
         messageMapper.insert(message);
@@ -42,15 +36,8 @@ public class MessageService {
         return messageMapper.selectCountByExample(example);
     }
 
-    public MessageText getMessageTextById(String id) {
-        return messageTextMapper.selectByPrimaryKey(id);
-    }
-
-    public List<Message> getMessageListByReceiver(String receiverId) {
-        Example example = new Example(Message.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("receiverId", receiverId);
-        return messageMapper.selectByExample(example);
+    public List<Map<String,Object>> getMessageListByReceiver(String receiverId) {
+       return messageMapper.getMessageListByReceiver(receiverId);
     }
 
     public List<Message> getMessageListBySender(String senderId) {
@@ -58,5 +45,24 @@ public class MessageService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("senderId", senderId);
         return messageMapper.selectByExample(example);
+    }
+
+    public void deleteMessage(String receiver, Integer type){
+        Example example = new Example(Message.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("receiverId", receiver);
+        criteria.andEqualTo("type", type);
+        messageMapper.deleteByExample(example);
+    }
+
+    public int deleteOneMessage(String id) {
+        return messageMapper.deleteByPrimaryKey(id);
+    }
+
+    public void readOneMessage(String messageId) {
+        Message message = new Message();
+        message.setPkId(messageId);
+        message.setStatus(true);
+        messageMapper.updateByPrimaryKeySelective(message);
     }
 }

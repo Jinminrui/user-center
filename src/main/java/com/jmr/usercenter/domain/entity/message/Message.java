@@ -45,13 +45,11 @@ public class Message {
     private Date updateTime;
 
     /**
-     * 消息内容
-     */
-    @Column(name = "message_text_id")
-    private String messageTextId;
-
-    /**
      * 消息状态：已读或未读
      */
     private Boolean status;
+
+    private String title;
+
+    private String content;
 }

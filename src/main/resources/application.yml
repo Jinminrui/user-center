@@ -31,10 +31,16 @@ spring:
 
 server:
   port: 8081
-rocketmq:
-  name-server: 127.0.0.1:9876
-  producer:
-    group: user-group
+#rocketmq:
+#  name-server: 127.0.0.1:9876
+#  producer:
+#    group: user-group
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  pageSizeZero: true #pageSize=0
 
 aliyun:
   accessKeyId: LTAI4Fsk3ufKP5w3LN61QHhp
