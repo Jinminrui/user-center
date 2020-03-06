@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @Slf4j
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/team")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
