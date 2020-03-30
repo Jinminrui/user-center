@@ -1,5 +1,6 @@
 package com.jmr.usercenter.controller.message;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.jmr.usercenter.domain.dto.CommonResponseDTO;
 import com.jmr.usercenter.domain.dto.message.DeleteMessageDTO;
@@ -23,9 +24,9 @@ public class MessageController {
     public CommonResponseDTO<MessageListByReceiverDTO> getMessageListByReceiver(@RequestParam(name = "receiverId") String receiverId,
                                                                                 @RequestParam(name = "pageSize") int pageSize,
                                                                                 @RequestParam(name = "pageNum") int pageNum) {
-        PageHelper.startPage(pageNum, pageSize);
+        Page<Object> page = PageHelper.startPage(pageNum, pageSize);
         List<Map<String, Object>> messages = messageService.getMessageListByReceiver(receiverId);
-        Integer total = messageService.getTotal(receiverId);
+        Integer total = Math.toIntExact(page.getTotal());
         Integer notRead = messageService.getUnReadNum(receiverId);
         return CommonResponseDTO.<MessageListByReceiverDTO>builder().code(200).data(MessageListByReceiverDTO.builder()
                 .list(messages)

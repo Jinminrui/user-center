@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -62,14 +63,9 @@ public class UserResponseDTO {
     private String description;
 
     /**
-     * 是否有密码
-     */
-    private Boolean hasPassword;
-
-    /**
      * 所属团队id
      */
-    private Team team;
+    private List<String> teams;
 
     private Date createTime;
 

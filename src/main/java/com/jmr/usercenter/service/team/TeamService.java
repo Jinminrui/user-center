@@ -61,15 +61,8 @@ public class TeamService {
         userTeamRelationMapper.insertSelective(userTeamRelation);
     }
 
-    public String getTeamIdByUserId(String userId) {
-        Example example = new Example(UserTeamRelation.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("userId", userId);
-        UserTeamRelation userTeamRelation = userTeamRelationMapper.selectOneByExample(example);
-        if (userTeamRelation == null) {
-            return null;
-        }
-        return userTeamRelation.getTeamId();
+    public List<String> getTeamIdByUserId(String userId) {
+        return userTeamRelationMapper.selectTeamIdByUserId(userId);
     }
 
     public void update(Team team) {

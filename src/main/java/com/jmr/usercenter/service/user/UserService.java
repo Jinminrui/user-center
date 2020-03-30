@@ -1,5 +1,6 @@
 package com.jmr.usercenter.service.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jmr.usercenter.dao.user.UserMapper;
 import com.jmr.usercenter.domain.dto.team.InviteInfoRedisDTO;
 import com.jmr.usercenter.domain.dto.user.UserLoginDTO;
@@ -33,12 +34,11 @@ public class UserService {
 
     public User findById(String id) {
         if (redisUtil.hasKey(id) && redisUtil.get(id) != null) {
-            log.info("从redis中读取{}的信息", id);
-            return (User) redisUtil.get(id);
+            return JSONObject.parseObject((String) redisUtil.get(id), User.class);
         }
         User user = userMapper.selectByPrimaryKey(id);
         if (user != null) {
-            redisUtil.set(id, user,43200);
+            redisUtil.set(id, JSONObject.toJSONString(user),43200);
         }
         return user;
     }

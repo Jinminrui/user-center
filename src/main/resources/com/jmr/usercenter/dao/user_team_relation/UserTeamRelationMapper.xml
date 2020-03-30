@@ -12,4 +12,10 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="user_role" jdbcType="INTEGER" property="userRole" />
   </resultMap>
+
+  <select id="selectTeamIdByUserId" resultType="String">
+    select user_team_relation.team_id
+    from user_team_relation
+    where user_team_relation.user_id=#{userId}
+  </select>
 </mapper>

@@ -22,6 +22,13 @@ public class TeamController {
     private final TeamService teamService;
 
     @CheckLogin
+    @GetMapping("/{id}")
+    public CommonResponseDTO<Team> getTeamInfoById(@PathVariable String id) {
+        Team team = teamService.getTeamInfoById(id);
+        return CommonResponseDTO.<Team>builder().code(200).data(team).desc("success").build();
+    }
+
+    @CheckLogin
     @PostMapping("/create")
     public CommonResponseDTO<Object> create(@RequestBody Team team) {
         teamService.create(team);

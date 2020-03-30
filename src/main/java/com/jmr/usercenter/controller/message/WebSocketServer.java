@@ -149,7 +149,9 @@ public class WebSocketServer {
      * 实现服务器主动推送
      */
     public void sendMessage(String message) throws IOException {
-        this.session.getBasicRemote().sendText(message);
+        if(this.session !=null && this.session.getBasicRemote() != null) {
+            this.session.getBasicRemote().sendText(message);
+        }
     }
 
 

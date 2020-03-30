@@ -41,20 +41,8 @@ public class UserController {
     public CommonResponseDTO<UserResponseDTO> getUserById(@PathVariable String id) {
         User user = userService.findById(id);
         UserResponseDTO userResponseDTO = new UserResponseDTO();
-        if(user.getPassword() == null) {
-            userResponseDTO.setHasPassword(false);
-        }
-        userResponseDTO.setHasPassword(true);
-        String teamId = teamService.getTeamIdByUserId(id);
-
-        // TODO 查询太多次数据库了，可以调优
-
-        if(teamId == null) {
-            userResponseDTO.setTeam(null);
-        } else {
-            userResponseDTO.setTeam(teamService.getTeamInfoById(teamId));
-        }
-
+        List<String> teamIds = teamService.getTeamIdByUserId(id);
+        userResponseDTO.setTeams(teamIds);
         BeanUtils.copyProperties(user, userResponseDTO);
         return CommonResponseDTO.<UserResponseDTO>builder().code(200).data(userResponseDTO).desc("success").build();
     }
