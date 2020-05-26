@@ -7,6 +7,7 @@ import com.jmr.usercenter.dao.team.TeamMapper;
 import com.jmr.usercenter.dao.user_team_relation.UserTeamRelationMapper;
 import com.jmr.usercenter.domain.dto.message.MessageResponseDTO;
 import com.jmr.usercenter.domain.dto.team.InviteInfoRedisDTO;
+import com.jmr.usercenter.domain.dto.team.TeamDTO;
 import com.jmr.usercenter.domain.entity.message.Message;
 import com.jmr.usercenter.domain.entity.team.Team;
 import com.jmr.usercenter.domain.entity.user.User;
@@ -39,8 +40,8 @@ public class TeamService {
 
     private final UUIDOperator uuidOperator;
 
-    public Team getTeamInfoById(String id) {
-        return teamMapper.selectByPrimaryKey(id);
+    public TeamDTO getTeamInfoByUserId(String teamId, String userId) {
+        return teamMapper.getTeamInfoByUserId(teamId,userId);
     }
 
     public void create(Team team) {

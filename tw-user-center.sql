@@ -72,7 +72,7 @@ CREATE TABLE `team` (
 
 LOCK TABLES `team` WRITE;
 /*!40000 ALTER TABLE `team` DISABLE KEYS */;
-INSERT INTO `team` VALUES ('b907f9ec7c6146d49587ca98f9a60a90','Scrum产品研发团队','我们遇到什么困难都不要怕，微笑着面对它。','efa5a42313ca4f3b9570e9a1c95871bd','2020-01-20 15:18:16','2020-01-26 20:59:26');
+INSERT INTO `team` VALUES ('7d97b389c9004533a61ac18783370dec','123',NULL,'1','2020-04-18 23:59:25','2020-04-18 23:59:25'),('b907f9ec7c6146d49587ca98f9a60a90','Scrum产品研发团队','我们遇到什么困难都不要怕，微笑着面对它。','efa5a42313ca4f3b9570e9a1c95871bd','2020-01-20 15:18:16','2020-01-26 20:59:26'),('e67c4ad87a1a40d5820dab48c1b468b1','123',NULL,'1','2020-04-19 10:50:04','2020-04-19 10:50:04');
 /*!40000 ALTER TABLE `team` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,7 +109,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('71022b4908a54243b4ac352003b06950','测试用户','123','18094498861',NULL,NULL,NULL,'http://oss.jinminrui.cn/avatars/default.svg',NULL,'前端开发工程师','2020-03-03 16:32:04','2020-03-03 17:17:13',NULL),('71ac3f0df4b6413a884db5b838778403','罗飞','123','18851770060','nmsl@luofei.com',NULL,NULL,'http://oss.jinminrui.cn/avatars/default.svg',2,'后端开发工程师','2020-01-21 09:53:10','2020-01-21 09:54:47','奥利给！！'),('8d68826010d54b418fa4192571135bd6','杨志云','123456','18851777939','593323580@qq.com','哈哈哈',NULL,'http://oss.jinminrui.cn/avatars/default.svg',2,'后端开发工程师','2020-01-20 18:22:39','2020-01-20 18:26:41','奥利给！！！'),('efa5a42313ca4f3b9570e9a1c95871bd','金敏睿','980328','17314976003','969172689@qq.com','brlive',NULL,'http://oss.jinminrui.cn/avatars/efa5a42313ca4f3b9570e9a1c95871bd/20200120122152.png',1,'前端开发工程师','2020-01-20 12:20:14','2020-02-22 11:35:25','面对疾风吧！！！');
+INSERT INTO `user` VALUES ('2fa6becfa9714043be78d64d2f589d12','张海涛','123','18252086662',NULL,NULL,NULL,'http://oss.jinminrui.cn/avatars/2fa6becfa9714043be78d64d2f589d12/20200414101153.jpeg',1,'安卓开发工程师','2020-04-14 10:10:27','2020-04-14 10:11:57',NULL),('71022b4908a54243b4ac352003b06950','蜡笔小新','123','18094498861',NULL,NULL,NULL,'http://oss.jinminrui.cn/avatars/71022b4908a54243b4ac352003b06950/20200409161537.jpg',1,'前端开发工程师','2020-03-03 16:32:04','2020-04-09 16:16:01',NULL),('71ac3f0df4b6413a884db5b838778403','罗飞','123','18851770060','nmsl@luofei.com',NULL,NULL,'http://oss.jinminrui.cn/avatars/default.svg',1,'后端开发工程师','2020-01-21 09:53:10','2020-01-21 09:54:47','奥利给！！'),('8d68826010d54b418fa4192571135bd6','杨志云','123456','18851777939','593323580@qq.com','哈哈哈',NULL,'http://oss.jinminrui.cn/avatars/default.svg',1,'后端开发工程师','2020-01-20 18:22:39','2020-01-20 18:26:41','奥利给！！！'),('efa5a42313ca4f3b9570e9a1c95871bd','金敏睿','980328','17314976003','969172689@qq.com','brlive',NULL,'http://oss.jinminrui.cn/avatars/efa5a42313ca4f3b9570e9a1c95871bd/20200120122152.png',1,'前端开发工程师','2020-01-20 12:20:14','2020-04-19 11:48:55','面对疾风吧！！！');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,7 +132,7 @@ CREATE TABLE `user_team_relation` (
   KEY `fk_user_team_team1_idx` (`team_id`),
   CONSTRAINT `fk_user_team_team1` FOREIGN KEY (`team_id`) REFERENCES `team` (`pk_id`),
   CONSTRAINT `fk_user_team_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`pk_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,7 +141,7 @@ CREATE TABLE `user_team_relation` (
 
 LOCK TABLES `user_team_relation` WRITE;
 /*!40000 ALTER TABLE `user_team_relation` DISABLE KEYS */;
-INSERT INTO `user_team_relation` VALUES (1,'efa5a42313ca4f3b9570e9a1c95871bd','b907f9ec7c6146d49587ca98f9a60a90','2020-01-20 15:18:16','2020-01-20 15:18:16',1),(13,'71022b4908a54243b4ac352003b06950','b907f9ec7c6146d49587ca98f9a60a90','2020-03-04 11:35:19','2020-03-04 11:35:19',2),(17,'8d68826010d54b418fa4192571135bd6','b907f9ec7c6146d49587ca98f9a60a90','2020-03-04 15:47:55','2020-03-04 15:47:55',2);
+INSERT INTO `user_team_relation` VALUES (1,'efa5a42313ca4f3b9570e9a1c95871bd','b907f9ec7c6146d49587ca98f9a60a90','2020-01-20 15:18:16','2020-01-20 15:18:16',1),(13,'71022b4908a54243b4ac352003b06950','b907f9ec7c6146d49587ca98f9a60a90','2020-03-04 11:35:19','2020-03-04 11:35:19',2),(17,'8d68826010d54b418fa4192571135bd6','b907f9ec7c6146d49587ca98f9a60a90','2020-03-04 15:47:55','2020-03-04 15:47:55',2),(18,'2fa6becfa9714043be78d64d2f589d12','b907f9ec7c6146d49587ca98f9a60a90','2020-04-14 10:12:57','2020-04-14 10:12:57',2);
 /*!40000 ALTER TABLE `user_team_relation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -154,4 +154,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-04 16:12:36
+-- Dump completed on 2020-05-14 19:46:08

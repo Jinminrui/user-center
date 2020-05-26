@@ -4,6 +4,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.jmr.usercenter.auth.CheckLogin;
 import com.jmr.usercenter.domain.dto.CommonResponseDTO;
 import com.jmr.usercenter.domain.dto.team.InviteMemberDTO;
+import com.jmr.usercenter.domain.dto.team.TeamDTO;
 import com.jmr.usercenter.domain.entity.team.Team;
 import com.jmr.usercenter.domain.entity.user_team_relation.UserTeamRelation;
 import com.jmr.usercenter.service.team.TeamService;
@@ -22,10 +23,11 @@ public class TeamController {
     private final TeamService teamService;
 
     @CheckLogin
-    @GetMapping("/{id}")
-    public CommonResponseDTO<Team> getTeamInfoById(@PathVariable String id) {
-        Team team = teamService.getTeamInfoById(id);
-        return CommonResponseDTO.<Team>builder().code(200).data(team).desc("success").build();
+    @GetMapping("/detail")
+    public CommonResponseDTO<TeamDTO> getTeamInfoByUserId(@RequestParam(value = "teamId") String teamId,
+                                                          @RequestParam(value = "userId") String userId) {
+        TeamDTO team = teamService.getTeamInfoByUserId(teamId,userId);
+        return CommonResponseDTO.<TeamDTO>builder().code(200).data(team).desc("success").build();
     }
 
     @CheckLogin

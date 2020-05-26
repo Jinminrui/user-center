@@ -74,6 +74,7 @@ public class UserService {
                 .phone(userLoginDTO.getPhoneNum())
                 .username(userLoginDTO.getPhoneNum())
                 .avatar("http://oss.jinminrui.cn/avatars/default.svg")
+                .role(1)
                 .createTime(new Date())
                 .updateTime(new Date())
                 .build();
